@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Buy Car{% endblock title %}
+
+{% block contain %}
+<h1>Car Buy Form</h1>
+<form action="{% url 'buycar' cardata.id %}" method="post" novalidate>
+    {% csrf_token %}
+    <table>
+        <tbody>
+            <tr>
+                <td>Seller Name:</td>
+                <td>{{cardata.seller_name}}</td>
+            </tr>
+            <tr>
+                <td>Seller Mobile:</td>
+                <td>{{cardata.seller_mobile}}</td>
+            </tr>
+            <tr>
+                <td>Created By:</td>
+                <td>{{cardata.make}}</td>
+            </tr>
+            <tr>
+                <td>Model:</td>
+                <td>{{cardata.model}}</td>
+            </tr>
+            <tr>
+                <td>Year:</td>
+                <td>{{cardata.year}}</td>
+            </tr>
+            <tr>
+                <td>Condition:</td>
+                <td>{{cardata.condition}}</td>
+            </tr>
+            <tr>
+                <td>Asking Price:</td>
+                <td>{{cardata.asking_price}}</td>
+            </tr>
+            {% for form in form %}
+            <tr>
+                <td>{{form.label_tag}}</td>
+                <td>{{form}}</td>
+                <td>{{form.errors}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" value="Submit">
+    {% endblock contain %}

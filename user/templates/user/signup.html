@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Signup{% endblock title %}
+
+{% block contain %} 
+    <h1>Signup</h1><br>
+    <form action="{% url 'signup' %}" method="post" novalidate>
+        {% csrf_token %}
+    <table>
+        <tbody>
+            {% for form in form %}
+                <tr><td>{{form.label_tag}}</td><td>{{form}}</td><td>{{form.errors}}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" value="Signup">
+</form>
+
+{% endblock contain %} 
+
+
+

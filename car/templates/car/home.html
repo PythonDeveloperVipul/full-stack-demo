@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block contain %}
+{% load static %}
+<table id="myTable" class="table table-bordered mt-2">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Seller Name</th>
+      <th scope="col">Seller Mobile No.</th>
+      <a href="">
+        <th scope="col" onclick="sortTable(3)">Make</th>
+      </a>
+      <th scope="col">Model</th>
+      <th scope="col" onclick="sortTable(5)">Year</th>
+      <th scope="col">Condition</th>
+      <th scope="col">Asking Price</th>
+      <th scope="col">Buy</th>
+      {% if request.user.is_superuser %}
+      <th scope="col">Make Available</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in object_list %}
+    <tr>
+      <td>{{data.id}}</td>
+      <td>{{data.seller_name}}</td>
+      <td>{{data.seller_mobile}}</td>
+      <td>{{data.make}}</td>
+      <td>{{data.model}}</td>
+      <td>{{data.year}}</td>
+      <td>{{data.condition}}</td>
+      <td>{{data.asking_price}}</td>
+      {% if data.car_status == 'Available' %}
+      <td><a href="{% url 'buycar' data.id %}"><input type="button" value="Buy"></a></td>
+      {% else %}
+      <td><label>Sold</label></td>
+      {% if request.user.is_superuser %}
+      <td><a href="{% url 'car_status_change' data.id %}"><input type="button" value="Make Available"></a></td>
+      {% endif %}
+      {% endif %}
+      {% empty %}
+      <td>Not Record Available..</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class='pagination justify-content-center'>
+  {% if page_obj.has_previous %}
+  <a
+    href='{% url "car_sell_list" %}?page={{ page_obj.previous_page_number }}{% if request.GET.txtsearch %}&txtsearch={{ request.GET.txtsearch }}{% endif %}'>Previous
+  </a>
+  {% endif %}
+
+  <span class='mx-4'>
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_next %}
+  <a
+    href='{% url "car_sell_list" %}?page={{ page_obj.next_page_number }}{% if request.GET.txtsearch %}&txtsearch={{ request.GET.txtsearch }}{% endif %}'>
+    Next</a>
+  {% endif %}
+</div>
+</div>
+<script src="{% static 'car/table/js/table_sort.js' %}"></script>
+
+
+{% endblock contain %}

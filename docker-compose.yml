@@ -1,0 +1,30 @@
+version: "3.9"
+   
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5538:5532"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data:cached
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8020
+    volumes:
+      - .:/code
+    ports:
+      - "8020:8020"
+    env_file:
+      .env
+    depends_on:
+      - postgres
+    links:
+      - postgres
+  
+
+
+

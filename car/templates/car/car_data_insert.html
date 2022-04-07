@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Car Sell{% endblock title %}
+
+{% block contain %}
+<h1>Car Sell Registration Form</h1>
+<form action="{% url 'car_data_insert' %}" method="post" novalidate>
+    {% csrf_token %}
+    <table>
+        <tbody>
+            {% for form in form %}
+            <tr>
+                <td>{{form.label_tag}}</td>
+                <td>{{form}}</td>
+                <td>{{form.errors}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" value="Submit">
+    {% endblock contain %}

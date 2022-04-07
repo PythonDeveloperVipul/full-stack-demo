@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+
+{% block contain %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="example" class="table table-striped" style="width:100%" data-order='[[ 0, "desc" ]]'>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Seller Name</th>
+                        <th>Seller Mobile No.</th>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>Condition</th>
+                        <th>Asking Price</th>
+                        <th>Buy</th>
+                        {% if request.user.is_superuser %}
+                        <th scope="col">Make Available</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in object_list %}
+                    <tr>
+                        <td>{{data.id}}</td>
+                        <td>{{data.seller_name}}</td>
+                        <td>{{data.seller_mobile}}</td>
+                        <td>{{data.make}}</td>
+                        <td>{{data.model}}</td>
+                        <td>{{data.year}}</td>
+                        <td>{{data.condition}}</td>
+                        <td>{{data.asking_price}}</td>
+                        {% if data.car_status == 'Available' %}
+                        <td><a href="{% url 'buycar' data.id %}"><input type="button" value="Buy"></a></td>
+                        {% else %}
+                        <td><label>Sold</label></td>
+                        {% if request.user.is_superuser %}
+                        <td><a href="{% url 'car_status_change' data.id %}"><input type="button"
+                                    value="Make Available"></a></td>
+                        {% else %}
+                        {% endif %}
+                        {% endif %}
+                        {% if request.user.is_superuser %}
+                        <td></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+{% endblock contain %}
